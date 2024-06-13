@@ -1,0 +1,26 @@
+
+type Event @aws_api_key @aws_iam {
+    from: String!
+    to: String!
+    message: String!
+}
+
+type Mutation {
+    sendLambdaEvent(to: String!, from: String!, message: String!): Event
+    @aws_api_key
+    sendEventBridgeEvent(to: String!, from: String!, message: String!): Event
+    @aws_iam
+}
+type Query {
+    getEvents: [Event]!
+}
+type Subscription @aws_api_key {
+    newEvent(from: String): Event
+    @aws_subscribe(mutations: ["sendLambdaEvent", "sendEventBridgeEvent"])
+}
+
+schema {
+  mutation: Mutation
+  subscription: Subscription
+  query: Query
+}
