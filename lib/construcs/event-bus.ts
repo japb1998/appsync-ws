@@ -48,7 +48,7 @@ export class CustomEventBus extends Construct {
             properties: {
               EventBusName: this.eventBusName,
               EventPattern: eventPattern,
-              Name: "appsync-rule",
+              Name: ruleName,
               Targets: targets,
             },
           });
