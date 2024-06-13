@@ -4,7 +4,7 @@ import * as appsync from "aws-cdk-lib/aws-appsync";
 import * as path from "path";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as iam from "aws-cdk-lib/aws-iam";
-import { AppsyncEBTarget, CustomEventBus } from "./construcs/event-bus";
+import { AppsyncRuleTarget, CustomEventBus } from "./construcs/event-bus";
 
 export class AppsyncWsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -112,14 +112,14 @@ export class AppsyncWsStack extends cdk.Stack {
      * 2.a appsync specific field appsync parameters - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-appsyncparameters.html
      * 2.b Input transformer understanding is required in order to pass the right values from your event to your query - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-events-rule-inputtransformer.html
     */
-    const appsyncTargets: AppsyncEBTarget[] = [
+    const appsyncTargets: AppsyncRuleTarget[] = [
       // None DS target
       {
-        Id: "eb-local-target",
-        Arn: graphqlEndpointArn,
-        RoleArn: invocationRole.roleArn,
-        AppSyncParameters: {
-          GraphQLOperation: `mutation sendEventBridgeEvent($to: String!, $from: String!, $message: String!){
+        id: "eb-local-target",
+        arn: graphqlEndpointArn,
+        roleArn: invocationRole.roleArn,
+        appSyncParameters: {
+          graphQlOperation: `mutation sendEventBridgeEvent($to: String!, $from: String!, $message: String!){
             sendEventBridgeEvent(to: $to, from: $from, message: $message)
             {
               to
@@ -128,14 +128,14 @@ export class AppsyncWsStack extends cdk.Stack {
           }
 }`,
         },
-        InputTransformer: {
+        inputTransformer: {
           // Map the fields required for mutation
-          InputPathsMap: {
+          inputPathsMap: {
             to: "$.detail.to",
             from: "$.detail.from",
             message: "$.detail.message",
           },
-          InputTemplate: JSON.stringify({
+          inputTemplate: JSON.stringify({
             to: "<to>",
             from: "<from>",
             message: "<message>",
