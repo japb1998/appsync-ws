@@ -10,8 +10,8 @@ export class AppsyncWsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const graphqlApi = new appsync.GraphqlApi(this, "EventApi", {
-      name: "event-processor-api",
+    const graphqlApi = new appsync.GraphqlApi(this, "AppSyncDemoAPI", {
+      name: "appsync-demo-api",
       schema: appsync.SchemaFile.fromAsset("schema/schema.graphql"),
       authorizationConfig: {
         defaultAuthorization: {
@@ -50,8 +50,8 @@ export class AppsyncWsStack extends cdk.Stack {
 
 
     // Lambda Data Source
-    const sendEventLambda = new lambda.Function(this, "event-processor", {
-      functionName: "event-processor",
+    const sendEventLambda = new lambda.Function(this, "EventHandler", {
+      functionName: "event-handler",
       runtime: lambda.Runtime.PROVIDED_AL2023,
       code: lambda.Code.fromAsset(
         path.join(__dirname, "../bin/functions/sendEventResolver")

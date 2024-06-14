@@ -9,11 +9,13 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "lint": "eslint . --ext .ts,.js -c eslint.config.mjs"
+    "lint": "eslint . --ext .ts,.js -c eslint.config.mjs",
+    "serve:frontend": "cd appsync-demo-frontend && npm run start",
+    "install": "npm run install && cd ./appsync-demo-frontend && npm run install"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "@types/node": "20.12.7",
+    "@types/node": "^20.12.7",
     "aws-cdk": "2.141.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",

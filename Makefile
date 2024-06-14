@@ -1,4 +1,4 @@
-.Phony: build-resolver deploy build
+.Phony: build-resolver deploy build destroy
 build-resolver:
 	@echo "Removing old resolvers"
 	rm -rf ./bin/functions
@@ -11,3 +11,5 @@ deploy:
 
 build:
 	npx aws-cdk synth --profile personal
+destroy:
+	npx aws-cdk destroy --profile personal

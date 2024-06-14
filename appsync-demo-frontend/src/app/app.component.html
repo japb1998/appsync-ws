@@ -1,0 +1,60 @@
+<style>
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  #event-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  
+  }
+  .event-sections {
+    min-height: 30vh;
+  }
+  ul {
+    max-width: 50%;
+  }
+</style>
+<h1>AppSync Demo</h1>
+<main>
+  
+  <section id="user-events" class="event-sections">
+    <h2>Incoming User Events:</h2>
+    <ol>
+      @for (message of userMessages | async; track message;){ 
+      <li>
+        <header><b>To:</b> {{message.to}}</header>
+        <div> {{message.message}}</div>
+        <footer><b>From:</b> {{message.from}}</footer>
+      </li>
+      <div style="width: 100%; border:solid black 1px"></div>
+    }
+    </ol>
+  </section>
+
+  <section id="eb-events" class="event-section">
+    <h2>Incoming EventBridge Events:</h2>
+    <ol>
+      @for (message of (ebMessages | async); track message){ 
+      <li>
+        <header><b>To:</b> {{message.to}}</header>
+        <div> {{message.message}}</div>
+        <footer><b>From:</b> {{message.from}}</footer>
+      </li>
+    }
+    </ol>
+  </section>
+  <section id="event-form">
+    <h2>Send a live event:</h2>
+    <form id="event-form" [formGroup]="eventForm" (submit)="sendMessage()">
+      <label for="to">To</label>
+        <input name="to" id="to" type="text" formControlName="from">
+      <label name="from" for="to">From     </label>
+        <input id="to" type="text" formControlName="to">
+      <textarea name="message" id="message" formControlName="message"></textarea>
+      <br>
+      <button type="submit">send</button>
+    </form>
+  </section>
+</main>
